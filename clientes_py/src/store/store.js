@@ -7,9 +7,22 @@ export const useClientesStore = defineStore({
   state: () => ({
     clientes: [],
     formData: {
-      Name: '',
-      Surname: '',
-      Correo: '',
+      ADMINISTRADOR:'',
+      ASOCIADO: '',
+      BASE_EMPRESA: '',
+      CODIGOS: ' ',
+      CORREO: 0,
+      DEPARTAMENTO: '',
+      DIRECCION: '',
+      DISTRITO: ' ',
+      DNI: '',
+      NUMERO: '',
+      PROVINCIA: '',
+      RAZON_SOCIAL: ' ',
+      REFERENCIA: ' ',
+      REPORTES: '',
+      RUC: '',
+      TELEFONO: ''
       // Agrega más campos según tu esquema de base de datos
     },
     client: null,
@@ -33,7 +46,7 @@ export const useClientesStore = defineStore({
     // Acciones para interactuar con un cliente específico
     async fetchCliente(id) {
       try {
-        const response = await fetch(`/api/clientes/${id}`);
+        const response = await fetch(`http://localhost:5000/clientes/${id}`);
         const data = await response.json();
         this.client = data;
       } catch (error) {
@@ -41,22 +54,52 @@ export const useClientesStore = defineStore({
       }
     },
 
+    // async createCliente(formData) {
+    //   // Lógica para crear un nuevo cliente en tu backend
+    //   try {
+    //     await fetch('http://localhost:5000/clientes', {
+    //       method: 'POST',
+    //       body: JSON.stringify(formData),
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     });
+    //     // Actualizar la lista de clientes después de crear uno nuevo si es necesario
+    //     await this.fetchClientes();
+    //   } catch (error) {
+    //     console.error('Error al crear el cliente:', error);
+    //   }
+    // },
+
     async createCliente(formData) {
-      // Lógica para crear un nuevo cliente en tu backend
       try {
-        await fetch('/api/clientes', {
+        const response = await fetch('http://localhost:5000/clientes', {
           method: 'POST',
           body: JSON.stringify(formData),
           headers: {
             'Content-Type': 'application/json',
+            'cors':'no-cors' 
           },
         });
-        // Actualizar la lista de clientes después de crear uno nuevo si es necesario
-        await this.fetchClientes();
+
+        if (response.ok) {
+          // Cliente creado exitosamente
+          const clienteCreado = await response.json();
+          console.log('Cliente creado exitosamente:', clienteCreado);
+          return { status: 'success', message: 'Cliente creado exitosamente' };
+        } else {
+          // Error al crear el cliente
+          const errorMessage = await response.text();
+          console.error('Error al crear el cliente:', errorMessage);
+          return { status: 'error', message: 'Error al crear el cliente' };
+        }
       } catch (error) {
+        // Error de red u otro error
         console.error('Error al crear el cliente:', error);
+        return { status: 'error', message: 'Error al crear el cliente' };
       }
     },
+
 
     async updateCliente(formData) {
       // Lógica para actualizar un cliente existente en tu backend

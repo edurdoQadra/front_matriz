@@ -20,6 +20,7 @@
       <table id="myTable" class="table-auto min-w-full border-collapse border border-gray-300">
         <thead>
           <tr>
+            <th class="px-4 py-2 bg-gray-100 border border-gray-300">ID</th>
             <th class="px-4 py-2 bg-gray-100 border border-gray-300">Nombre</th>
             <th class="px-4 py-2 bg-gray-100 border border-gray-300">Apellido</th>
             <th class="px-4 py-2 bg-gray-100 border border-gray-300">Correo Electrónico</th>
@@ -92,13 +93,13 @@
                                                         class="input-text border rounded-md py-2 px-3 mt-1">
                                                 </div>
 
-                                                <!-- Input CODIGOS -->
+                                                <!-- Input CODIGOS
                                                 <div class="flex flex-col">
                                                     <label for="codigos"
                                                         class="block text-sm font-medium text-gray-700">Códigos</label>
                                                     <input type="text" id="codigos" v-model="formData.CODIGOS"
                                                         class="input-text border rounded-md py-2 px-3 mt-1">
-                                                </div>
+                                                </div> -->
 
                                                 <!-- Input CORREO -->
                                                 <div class="flex flex-col">
@@ -148,12 +149,12 @@
                                             <!-- Inputs en la segunda columna -->
                                             <div class="grid grid-cols-1 gap-4">
                                                 <!-- Input ID -->
-                                                <div class="flex flex-col">
+                                                <!-- <div class="flex flex-col">
                                                     <label for="id"
                                                         class="block text-sm font-medium text-gray-700">ID</label>
                                                     <input type="text" id="id" v-model="formData.ID"
                                                         class="input-text border rounded-md py-2 px-3 mt-1">
-                                                </div>
+                                                </div> -->
 
                                                 <!-- Input NUMERO -->
                                                 <div class="flex flex-col">
@@ -218,13 +219,13 @@
                                                 </div>
 
                                                 <!-- Input STATUS -->
-                                                <div class="flex flex-col">
+                                                <!-- <div class="flex flex-col">
                                                     <label for="status"
                                                         class="block text-sm font-medium text-gray-700">Status</label>
                                                     <input type="text" id="status"
                                                         v-model="formData.STATUS"
                                                         class="input-text border rounded-md py-2 px-3 mt-1">
-                                                </div>
+                                                </div> -->
                                                 <!-- Agrega más campos de formulario aquí -->
                                             </div>
                                         </div>
@@ -270,17 +271,23 @@ export default defineComponent({
     const store = useClientesStore();
     const clients = ref([]);
     const formData = ref({
-      converted: '',
-      correo: '',
-      creation: '',
-      id: '',
-      mobile: '',
-      name: '',
-      status: '',
-      surname: '',
-      update: '',
-      username: ''
-    });
+      ADMINISTRADOR:'',
+      ASOCIADO: '',
+      BASE_EMPRESA: '',
+      CODIGOS: ' ',
+      CORREO: 0,
+      DEPARTAMENTO: '',
+      DIRECCION: '',
+      DISTRITO: ' ',
+      DNI: '',
+      NUMERO: '',
+      PROVINCIA: '',
+      RAZON_SOCIAL: ' ',
+      REFERENCIA: ' ',
+      REPORTES: '',
+      RUC: '',
+      TELEFONO: ''
+      });
      const isModalOpen = ref(false);
     const modalTitle = ref('');
     const modalButtonText = ref('Guardar'); // Inicialmente el texto es 'Guardar'
@@ -297,31 +304,88 @@ export default defineComponent({
       isModalOpen.value = false;
     };
 
-    // const submitForm = async (event) => {
-    //   event.preventDefault();
-    //   console.log(formData.value);
-    //   await store.createCliente(formData.value);
-    //   closeModal();
-    // };
 
-    const submitForm = async (event) => {
-      event.preventDefault();
-      if (modalButtonText.value === 'Guardar') {
-        console.log(formData.value);
-        // await store.createCliente(formData.value);
-      } else {
-        await store.updateCliente(formData.value);
-      }
-      closeModal();
+    const verCliente = async (id) => {
+      // Implementa la lógica para ver el cliente aquí
+      alert(`Viendo cliente con ID: ${id}`);
     };
 
+    const editarCliente = async (id) => {
+      // Implementa la lógica para editar el cliente aquí
+      alert(`Editando cliente con ID: ${id}`);
+    };
+
+    const borrarCliente = async (id) => {
+      // Implementa la lógica para borrar el cliente aquí
+      alert(`Borrando cliente con ID: ${id}`);
+    };
 
 
 //----------------------------------------------------------------------------------------//
 //----------------------------------- SHOW USUARIO ---------------------------------------//
 //----------------------------------------------------------------------------------------//
+// onMounted(async () => {
+//   const fetchedData = await store.fetchClientes(); // Obtener los datos
+//   let fetchedClients = [];
+
+//   if (typeof fetchedData === 'object' && fetchedData.clientes) {
+//     fetchedClients = fetchedData.clientes;
+//     console.log(fetchedClients);
+//   } else {
+//     console.error('Los datos recibidos no son válidos:', fetchedData);
+//   }
+
+//   const table = $('#myTable').DataTable({
+//     searching: true,
+//     paging: true,
+//     data: fetchedClients,
+//     columns: [
+//       { data: 'ID' },  
+//       { data: 'ADMINISTRADOR' },
+//       { data: 'CORREO' },
+//       { data: 'ASOCIADO' },
+//       {
+//         data: null,
+//         render: function(data, type, row) {
+//           return `
+//             <div class="flex justify-center space-x-4">
+//               <button class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" @click="verCliente(${row.ID})">Ver</button>
+//               <button class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600" @click="editarCliente(${row.ID})">Editar</button>
+//               <button class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600" @click="borrarCliente(${row.ID})">Borrar</button>
+//             </div>
+//           `;
+//         }
+//       }
+//     ],
+//     language: {
+//       "decimal": "",
+//       "emptyTable": "No hay datos disponibles en la tabla",
+//       "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+//       "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+//       "infoFiltered": "(filtrado de _MAX_ entradas totales)",
+//       "infoPostFix": "",
+//       "thousands": ",",
+//       "lengthMenu": "Mostrar _MENU_ entradas",
+//       "loadingRecords": "Cargando...",
+//       "processing": "Procesando...",
+//       "search": "Buscar:",
+//       "zeroRecords": "No se encontraron registros coincidentes",
+//       "paginate": {
+//         "first": "Primero",
+//         "last": "Último",
+//         "next": "Siguiente",
+//         "previous": "Anterior"
+//       },
+//       "aria": {
+//         "sortAscending": ": activar para ordenar la columna ascendente",
+//         "sortDescending": ": activar para ordenar la columna descendente"
+//       }
+//     }
+//   });
+// });
+
 onMounted(async () => {
-  const fetchedData = await store.fetchClientes(); // Obtener los datos
+  const fetchedData = await store.fetchClientes();
   let fetchedClients = [];
 
   if (typeof fetchedData === 'object' && fetchedData.clientes) {
@@ -336,6 +400,7 @@ onMounted(async () => {
     paging: true,
     data: fetchedClients,
     columns: [
+      { data: 'ID' },  
       { data: 'ADMINISTRADOR' },
       { data: 'CORREO' },
       { data: 'ASOCIADO' },
@@ -344,9 +409,9 @@ onMounted(async () => {
         render: function(data, type, row) {
           return `
             <div class="flex justify-center space-x-4">
-              <button class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" @click="verCliente(${row.ID})">Ver</button>
-              <button class="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600" @click="editarCliente(${row.ID})">Editar</button>
-              <button class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600" @click="borrarCliente(${row.ID})">Borrar</button>
+              <button class="ver-button px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Ver</button>
+              <button class="editar-button px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">Editar</button>
+              <button class="borrar-button px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">Borrar</button>
             </div>
           `;
         }
@@ -377,42 +442,89 @@ onMounted(async () => {
       }
     }
   });
+
+  // Manejar clics en botones usando Vue.js
+  $('#myTable').on('click', '.ver-button', function() {
+    const rowData = table.row($(this).parents('tr')).data();
+    verCliente(rowData.ID);
+  });
+
+  $('#myTable').on('click', '.editar-button', function() {
+    const rowData = table.row($(this).parents('tr')).data();
+    editarCliente(rowData.ID);
+  });
+
+  $('#myTable').on('click', '.borrar-button', function() {
+    const rowData = table.row($(this).parents('tr')).data();
+    borrarCliente(rowData.ID);
+  });
 });
+
 //------------------------------------------------------------------------------------//
 
 
 
 //----------------------------------------------------------------------------------------//
-//--------------------------------- CREATE USUARIO --------------------------------------//
+//--------------------------------- CREATE y EDITAR USUARIO ------------------------------//
 //----------------------------------------------------------------------------------------//
 
-
-
-//----------------------------------------------------------------------------------------//
-//--------------------------------- EDIT USUARIO --------------------------------------//
-//----------------------------------------------------------------------------------------//
-
-
-    const editarCliente = async (id) => {
-      await store.fetchCliente(id);
-      formData.value = { ...store.client };
-      isModalOpen.value = true;
-      modalTitle.value = 'Editar Cliente';
-      modalButtonText.value = 'Actualizar';
+const submitForm = async (event) => {
+      event.preventDefault();
+      if (modalButtonText.value === 'Guardar') {
+        console.log(formData.value);
+         await store.createCliente(formData.value);
+      } else {
+        await store.updateCliente(formData.value);
+      }
+      closeModal();
     };
 
 
-//----------------------------------------------------------------------------------------//
-//--------------------------------- SHOW USUARIO --------------------------------------//
-//----------------------------------------------------------------------------------------//
 
-    const verCliente = async (id) => {
-      await store.fetchCliente(id);
-      formData.value = { ...store.client };
-      isModalOpen.value = true;
-      modalTitle.value = 'Detalles del Cliente';
-      modalButtonText.value = 'Cerrar';
-    };
+
+
+// //----------------------------------------------------------------------------------------//
+// //--------------------------------- EDIT USUARIO --------------------------------------//
+// //----------------------------------------------------------------------------------------//
+
+
+//     // const editarCliente = async (id) => {
+     
+//     //  console.log(id);
+//     //   // await store.fetchCliente(id);
+//     //   // formData.value = { ...store.client };
+//     //   // isModalOpen.value = true;
+//     //   // modalTitle.value = 'Editar Cliente';
+//     //   // modalButtonText.value = 'Actualizar';
+//     // };
+
+//     const editarCliente =  (id) => {
+
+//       alert(`ID recibido: 2`);
+//       // console.log(id); // Agrega esta línea para verificar si el ID se pasa correctamente
+//   // await store.fetchCliente(id);
+//   // formData.value = { ...store.client };
+//   // isModalOpen.value = true;
+//   // modalTitle.value = 'Editar Cliente';
+//   // modalButtonText.value = 'Actualizar';
+// };
+
+
+// //----------------------------------------------------------------------------------------//
+// //--------------------------------- SHOW USUARIO --------------------------------------//
+// //----------------------------------------------------------------------------------------//
+
+//     const verCliente = async (id) => {
+
+//       alert(`ID recibido: 2`);
+
+
+//       // await store.fetchCliente(id);
+//       // formData.value = { ...store.client };
+//       // isModalOpen.value = true;
+//       // modalTitle.value = 'Detalles del Cliente';
+//       // modalButtonText.value = 'Cerrar';
+//     };
 
 
 //----------------------------------------------------------------------------------------//
